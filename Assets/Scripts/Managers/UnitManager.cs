@@ -63,7 +63,7 @@ namespace DOTS_Exercise.Managers
         private Dictionary<UnitTypes, EntityArchetype> _unitArchetypes = new Dictionary<UnitTypes, EntityArchetype>();
 
         // Services
-        private Dictionary<UnitTypes, UnitService> _unitsServices;
+        private Dictionary<UnitTypes, UnitService> _unitServices;
 
         public UnitManager(Observer observer) : base(observer) { }
 
@@ -72,14 +72,14 @@ namespace DOTS_Exercise.Managers
             SetUnitServices();
             SetUnitArchetypes();
 
-            _observer.AddRequest(Events.Request_SpawnPlayerProjectile, (arg) => _unitsServices[UnitTypes.PlayerProjectile].SpawnUnit(arg as SpawnProjectileDTO));
-            _observer.AddRequest(Events.Request_SpawnUFOProjectile, (arg) => _unitsServices[UnitTypes.UFOProjectile].SpawnUnit(arg as SpawnProjectileDTO));
+            _observer.AddRequest(Events.Request_SpawnPlayerProjectile, (arg) => _unitServices[UnitTypes.PlayerProjectile].SpawnUnit(arg as SpawnProjectileDTO));
+            _observer.AddRequest(Events.Request_SpawnUFOProjectile, (arg) => _unitServices[UnitTypes.UFOProjectile].SpawnUnit(arg as SpawnProjectileDTO));
             _observer.AddListener(Events.Trigger_OnGameStart, OnGameStart);
         }
 
         private void SetUnitServices()
         {
-            _unitsServices = new Dictionary<UnitTypes, UnitService>
+            _unitServices = new Dictionary<UnitTypes, UnitService>
             {
                 { UnitTypes.Player, new PlayerUnitService(SpawnUnit) },
                 { UnitTypes.Asteroid, new AsteroidUnitService(SpawnUnit) },
@@ -88,11 +88,13 @@ namespace DOTS_Exercise.Managers
                 { UnitTypes.UFOProjectile, new ProjectileUnitService(SpawnUnit) }
             };
 
-            _unitsServices[UnitTypes.Player].SetUnitSettings(UnitSettings);
-            _unitsServices[UnitTypes.Asteroid].SetUnitSettings(UnitSettings);
-            _unitsServices[UnitTypes.PlayerProjectile].SetUnitSettings(UnitSettings);
-            _unitsServices[UnitTypes.UFO].SetUnitSettings(UnitSettings);
-            _unitsServices[UnitTypes.UFOProjectile].SetUnitSettings(UnitSettings);
+            _unitServices[UnitTypes.Player].SetUnitSettings(UnitSettings);
+            _unitServices[UnitTypes.Asteroid].SetUnitSettings(UnitSettings);
+            _unitServices[UnitTypes.PlayerProjectile].SetUnitSettings(UnitSettings);
+            _unitServices[UnitTypes.UFO].SetUnitSettings(UnitSettings);
+            _unitServices[UnitTypes.UFOProjectile].SetUnitSettings(UnitSettings);
+
+            ((AsteroidUnitService)_unitServices[UnitTypes.Asteroid]).OnHalfWaveCleared.AddListener(() => { _unitServices[UnitTypes.UFO].SpawnUnit(); });
         }
 
         private void SetUnitArchetypes()
@@ -117,17 +119,16 @@ namespace DOTS_Exercise.Managers
             _observer.AddListener(Events.Trigger_OnUnitDied, OnUnitDied);
             _observer.AddListener(Events.Trigger_OnGameEnded, OnGameEnded);
 
-            _unitsServices[UnitTypes.Player].SpawnUnit();
-            _unitsServices[UnitTypes.Asteroid].SpawnUnit();
-            _unitsServices[UnitTypes.UFO].SpawnUnit();
+            _unitServices[UnitTypes.Player].SpawnUnit();
+            _unitServices[UnitTypes.Asteroid].SpawnUnit();
         }
 
         private void OnUnitDied(object args)
         {
             UnitDiedWithPositionDTO dto = (UnitDiedWithPositionDTO)args;
-            if (_unitsServices.ContainsKey(dto.UnitComponent.UnitType))
+            if (_unitServices.ContainsKey(dto.UnitComponent.UnitType))
             {
-                _unitsServices[dto.UnitComponent.UnitType].OnUnitDestroyed(dto);
+                _unitServices[dto.UnitComponent.UnitType].OnUnitDestroyed(dto);
             }
         }
 
@@ -230,7 +231,12 @@ namespace DOTS_Exercise.Managers
         {
             base.Dispose();
             _unitArchetypes.Clear();
-            _unitsServices.Clear();
+            _unitServices.Clear();
+            var entitiesManager = World.DefaultGameObjectInjectionWorld?.EntityManager;
+            if (entitiesManager.HasValue)
+            {
+                entitiesManager.Value.DestroyAndResetAllEntities();
+            }
         }
     }
 }

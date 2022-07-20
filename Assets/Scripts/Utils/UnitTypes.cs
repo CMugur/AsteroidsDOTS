@@ -7,6 +7,7 @@ namespace DOTS_Exercise.Utils
         Player,
         PlayerProjectile,
         UFOProjectile,
-        UFO
+        UFO,
+        Powerup
     }
 }

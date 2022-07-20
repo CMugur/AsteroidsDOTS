@@ -5,6 +5,7 @@ using System.Linq;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace DOTS_Exercise.Services
 {
@@ -12,6 +13,8 @@ namespace DOTS_Exercise.Services
     {
         private AsteroidWaveScriptableObject _currentWave;
         private int _asteroidsDiedThisWave = 0;
+        public bool _halfWavePassed = false;
+        public UnityEvent OnHalfWaveCleared = new UnityEvent();
 
         public AsteroidUnitService(Func<UnitScriptableObject, SpawnUnitDTO, Entity> unitFactory) : base(unitFactory) { }
 
@@ -31,6 +34,7 @@ namespace DOTS_Exercise.Services
                 _currentWave = UnitSettings.GetWave(_currentWave.NextWaveID);
             }
 
+            _halfWavePassed = false;
             _asteroidsDiedThisWave = 0;
             SpawnWave(_currentWave);
         }
@@ -74,9 +78,13 @@ namespace DOTS_Exercise.Services
 
         public override void OnUnitDestroyed(UnitDiedWithPositionDTO dto)
         {
-            Debug.Log(dto.Position);
-
             _asteroidsDiedThisWave++;
+            if (_asteroidsDiedThisWave >= _currentWave.TotalAsteroids / 2f && !_halfWavePassed)
+            {
+                _halfWavePassed = true;
+                OnHalfWaveCleared?.Invoke();
+            }
+
             if (_asteroidsDiedThisWave == _currentWave.TotalAsteroids)
             {
                 OnWaveCleared();

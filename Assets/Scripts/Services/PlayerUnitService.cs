@@ -5,7 +5,6 @@ using DOTS_Exercise.Utils;
 using System;
 using Unity.Entities;
 using Unity.Mathematics;
-using UnityEngine;
 
 namespace DOTS_Exercise.Services
 {
@@ -80,7 +79,6 @@ namespace DOTS_Exercise.Services
         {
             if (dto.UnitComponent.Lives == 1)
             {
-                Debug.LogError("GAME OVER");
                 return;
             }
 
