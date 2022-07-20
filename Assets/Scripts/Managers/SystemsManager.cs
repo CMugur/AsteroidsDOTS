@@ -13,9 +13,12 @@ namespace DOTS_Exercise.Managers
         // Not ideal for a large scale app
         private readonly List<Type> _systemTypes = new List<Type>() 
         { 
-            typeof(PlayerSteeringSystem),
+            typeof(PlayerInputSystem),
             typeof(UnitMovementSystem),
-            typeof(ShootingSystem)
+            typeof(ShootingSystem),
+            typeof(CollisionSystem),
+            typeof(LifetimeSystem),
+            typeof(TeleportSystem)
         };
 
         private List<CustomSystemBase> _systems = new List<CustomSystemBase>();

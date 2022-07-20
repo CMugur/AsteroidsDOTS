@@ -17,3 +17,5 @@ MonoBehaviour:
   Player: {fileID: 11400000, guid: b034e0a7bab6bad4098350f94270d8fe, type: 2}
   Weapons:
   - {fileID: 11400000, guid: b7e5b747efb470e448aa20d27745d535, type: 2}
+  - {fileID: 11400000, guid: fdfb769551244df45aef9869d5b08b03, type: 2}
+  UFO: {fileID: 11400000, guid: 907a6c54482654c4cbd3bd1cd7adb15f, type: 2}

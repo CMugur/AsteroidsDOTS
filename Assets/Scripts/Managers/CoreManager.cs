@@ -16,13 +16,14 @@ namespace DOTS_Exercise.Managers
         private readonly List<Type> _managerTypes = new List<Type>() 
         { 
             typeof(UnitManager),
-            typeof(SystemsManager)
+            typeof(SystemsManager),
+            typeof(GameplayManager),
+            typeof(ScreensManager)
         };
 
         private List<ManagerBase> _managers;
 
         [SerializeField] private List<SettingsScriptableObject> _settings;
-
 
         private void Awake()
         {

@@ -12,11 +12,12 @@ namespace DOTS_Exercise.Data.Settings
         CreateAssetMenu(fileName = "Unit Settings Scriptable Object", menuName = "Scriptable Objects/Settings/Unit Settings")]
     public class UnitSettingsScriptableObject : SettingsScriptableObject
     {
-        public List<UnitWaveScriptableObject> Waves;
+        public List<AsteroidWaveScriptableObject> Waves;
         public PlayerUnitScriptableObject Player;
         public List<WeaponScriptableObject> Weapons;
+        public UFOUnitScriptableObject UFO;
 
-        public UnitWaveScriptableObject GetWave(int id)
+        public AsteroidWaveScriptableObject GetWave(int id)
         {
             return Waves.FirstOrDefault(w => w.ID == id);
         }

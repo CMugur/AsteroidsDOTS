@@ -1,5 +1,4 @@
 using UnityEngine;
-using DOTS_Exercise.Data.Units;
 
 namespace DOTS_Exercise.Data.Weapons
 {
@@ -7,7 +6,8 @@ namespace DOTS_Exercise.Data.Weapons
     public class WeaponScriptableObject : ScriptableObject
     {
         public int ID;
-        public UnitScriptableObject Projectile;
+        public PlayerProjectileScriptableObject Projectile;
         public int ProjectileCount = 1;
+        public float CooldownSeconds = 0;
     }
 }

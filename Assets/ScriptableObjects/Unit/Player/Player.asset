@@ -12,9 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46c648288aff62f4ca19930ff263f178, type: 3}
   m_Name: Player
   m_EditorClassIdentifier: 
+  ID: 0
+  UnitType: 2
   Sprite: {fileID: 1269724166452363602, guid: bee9af09159b04d4fb3bf0bb7f59cc9d, type: 3}
   Health: 1
   Lives: 3
-  Speed: 3
-  CanRotate: 1
+  MovementSpeed: 3
+  RotationSpeed: 250
+  CanRotate: 0
+  ScoreAddedOnDeath: 0
   DefaultWeapon: {fileID: 11400000, guid: b7e5b747efb470e448aa20d27745d535, type: 2}

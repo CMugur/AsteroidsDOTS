@@ -10,7 +10,7 @@ namespace DOTS_Exercise.ECS.Systems.Units
         protected override void OnUpdate()
         {
             float deltaTime = Time.DeltaTime;
-            Entities.ForEach((ref UnitComponent unitComponent, ref Translation translation, ref Rotation rotation) =>
+            Entities.ForEach((ref Translation translation, ref Rotation rotation, in UnitComponent unitComponent) =>
             {
                 translation.Value += deltaTime * unitComponent.MovementSpeed * unitComponent.Direction;
                 
@@ -18,10 +18,10 @@ namespace DOTS_Exercise.ECS.Systems.Units
                 { 
                     float angle = Mathf.Atan2((-1f) * unitComponent.Direction.x, unitComponent.Direction.y) * Mathf.Rad2Deg;
                     var endRotationValue = Quaternion.AngleAxis(angle, Vector3.forward);
-                    var lerpRotationValue = Quaternion.Lerp(rotation.Value, endRotationValue, deltaTime * unitComponent.MovementSpeed);
+                    var lerpRotationValue = Quaternion.Lerp(rotation.Value, endRotationValue, deltaTime * unitComponent.RotationSpeed);
                     rotation.Value = new Unity.Mathematics.quaternion(lerpRotationValue.x, lerpRotationValue.y, lerpRotationValue.z, lerpRotationValue.w);
                 }
-            }).Schedule();
+            }).Run();
         }
     }
 }

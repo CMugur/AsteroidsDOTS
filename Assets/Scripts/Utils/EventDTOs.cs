@@ -1,17 +1,38 @@
+using DOTS_Exercise.ECS.Components.Units;
 using Unity.Entities;
 using Unity.Mathematics;
+using UnityEngine;
 
 namespace DOTS_Exercise.Utils
 {
-    public class SpawnUnitDTO
+    public class BaseStrcturalChangesDTO
+    {
+        public EntityCommandBuffer? ECB;
+    }
+
+    public class SpawnUnitDTO : BaseStrcturalChangesDTO
     {
         public float3 Position;
-        public float3 Direction;
-        public EntityCommandBuffer? ECB;
+        public float3 Direction;        
     }
 
     public class SpawnProjectileDTO : SpawnUnitDTO
     {
         public int WeaponID;        
+    }
+
+    public class SpawnPlayerDTO : SpawnUnitDTO
+    {
+        public int Lifes;
+    }
+
+    public class UnitDiedDTO : BaseStrcturalChangesDTO
+    {
+        public UnitComponent UnitComponent; 
+    }
+
+    public class UnitDiedWithPositionDTO : UnitDiedDTO
+    {
+        public Vector3 Position;
     }
 }

@@ -1,14 +1,16 @@
 using DOTS_Exercise.Utils;
+using DOTS_Exercise.Utils.Interfaces;
 using Unity.Entities;
 
 namespace DOTS_Exercise.ECS.Systems
 {
-    public abstract class CustomSystemBase : SystemBase
+    public abstract class CustomSystemBase : SystemBase, IRequestObserver
     {
-        protected Observer _observer;
+        public Observer Observer { get; set; }
+
         public void SetObserver(Observer observer)
         {
-            _observer = observer;
+            Observer = observer;
         }
     }
 }
