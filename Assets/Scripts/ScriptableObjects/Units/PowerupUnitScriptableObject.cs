@@ -7,6 +7,7 @@ namespace DOTS_Exercise.Data.Units
     public class PowerupUnitScriptableObject : UnitScriptableObject
     {
         public Weapons.WeaponScriptableObject WeaponUpgrade;
+        public Shields.ShieldScriptableObject Shield;
 
         public virtual void OnValidate()
         {

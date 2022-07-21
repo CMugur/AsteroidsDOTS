@@ -15,6 +15,9 @@ MonoBehaviour:
   ID: 0
   Asteroids:
   - {fileID: 11400000, guid: 1c93fef49e4be26479b39021716f12a9, type: 2}
+  - {fileID: 11400000, guid: 1c93fef49e4be26479b39021716f12a9, type: 2}
+  - {fileID: 11400000, guid: 1c93fef49e4be26479b39021716f12a9, type: 2}
+  - {fileID: 11400000, guid: 1c93fef49e4be26479b39021716f12a9, type: 2}
   SpawnAreaOffsetFromCameraSize: 0.5
   PlayerSafeRadius: 1
   NextWaveID: 0

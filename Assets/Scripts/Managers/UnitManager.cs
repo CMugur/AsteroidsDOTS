@@ -97,6 +97,7 @@ namespace DOTS_Exercise.Managers
             _unitServices[UnitTypes.Powerup].SetUnitSettings(UnitSettings);
 
             ((AsteroidUnitService)_unitServices[UnitTypes.Asteroid]).OnHalfWaveCleared.AddListener(() => { _unitServices[UnitTypes.UFO].SpawnUnit(); });
+            ((PowerupUnitService)_unitServices[UnitTypes.Powerup]).OnShieldAdded.AddListener(() => { _observer.Trigger(Events.Trigger_OnPlayerShieldAdded, null); });
         }
 
         private void SetUnitArchetypes()

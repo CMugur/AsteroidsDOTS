@@ -1,3 +1,4 @@
+using DOTS_Exercise.ECS.Components.Shields;
 using DOTS_Exercise.ECS.Components.Units;
 using DOTS_Exercise.Utils;
 using System.Collections.Generic;
@@ -38,7 +39,7 @@ namespace DOTS_Exercise.ECS.Systems
             List<int> entitiesRemoved = new List<int>();
             for (int i = 0; i < entities.Length; i++)
             {
-                if (entitiesRemoved.Contains(i))
+                if (entitiesRemoved.Contains(i) || entitiesManager.HasComponent<ShieldComponent>(entities[i]))
                 {
                     continue;
                 }
@@ -53,7 +54,7 @@ namespace DOTS_Exercise.ECS.Systems
 
                 for (int j = 0; j < entities.Length; j++)
                 {
-                    if (entitiesRemoved.Contains(j) || i == j)
+                    if (entitiesRemoved.Contains(j) || i == j || entitiesManager.HasComponent<ShieldComponent>(entities[j]))
                     {
                         continue;
                     }

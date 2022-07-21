@@ -18,7 +18,8 @@ namespace DOTS_Exercise.Managers
             typeof(ShootingSystem),
             typeof(CollisionSystem),
             typeof(LifetimeSystem),
-            typeof(TeleportSystem)
+            typeof(TeleportSystem),
+            typeof(ShieldSystem)
         };
 
         private List<CustomSystemBase> _systems = new List<CustomSystemBase>();

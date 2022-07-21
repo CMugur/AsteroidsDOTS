@@ -1,5 +1,6 @@
 using DOTS_Exercise.Data.Settings.Attributes;
 using DOTS_Exercise.Data.Settings.Interfaces;
+using DOTS_Exercise.Data.Shields;
 using DOTS_Exercise.Data.Units;
 using DOTS_Exercise.Data.Weapons;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace DOTS_Exercise.Data.Settings
         public List<AsteroidWaveScriptableObject> Waves;
         public PlayerUnitScriptableObject Player;
         public List<WeaponScriptableObject> Weapons;
+        public List<ShieldScriptableObject> Shields;
         public List<PowerupUnitScriptableObject> Powerups;
         public UFOUnitScriptableObject UFO;
 
@@ -26,6 +28,11 @@ namespace DOTS_Exercise.Data.Settings
         public WeaponScriptableObject GetWeapon(int id)
         {
             return Weapons.FirstOrDefault(w => w.ID == id);
+        }
+        
+        public ShieldScriptableObject GetShield(int id)
+        {
+            return Shields.FirstOrDefault(s => s.ID == id);
         }
         
         public PowerupUnitScriptableObject GetPowerup(int id)

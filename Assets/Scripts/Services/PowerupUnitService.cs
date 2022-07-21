@@ -1,14 +1,20 @@
 using DOTS_Exercise.Data.Units;
+using DOTS_Exercise.ECS.Components.Shields;
 using DOTS_Exercise.ECS.Components.Units;
 using DOTS_Exercise.ECS.Components.Weapons;
 using DOTS_Exercise.Utils;
 using System;
 using Unity.Entities;
+using Unity.Rendering;
+using UnityEngine;
+using UnityEngine.Events;
 
 namespace DOTS_Exercise.Services
 {
     public class PowerupUnitService : UnitService
     {
+        public UnityEvent OnShieldAdded = new UnityEvent();
+
         public PowerupUnitService(Func<UnitScriptableObject, SpawnUnitDTO, Entity> unitFactory) : base(unitFactory) { }
 
         public override void SpawnUnit(SpawnUnitDTO dto = null)
@@ -33,7 +39,7 @@ namespace DOTS_Exercise.Services
             PowerupUnitScriptableObject powerup = UnitSettings.GetPowerup(pDTO.PowerupTagComponent.ID);
 
             EntityManager entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-            if (entityManager.HasComponent<WeaponComponent>(pDTO.OtherEntity))
+            if (powerup.WeaponUpgrade != null && entityManager.HasComponent<WeaponComponent>(pDTO.OtherEntity))
             {
                 if (!dto.ECB.HasValue)
                 {
@@ -51,6 +57,40 @@ namespace DOTS_Exercise.Services
                         CooldownSeconds = powerup.WeaponUpgrade.CooldownSeconds
                     });
                 }
+            }
+
+            if (powerup.Shield != null)
+            {
+                if (!entityManager.HasComponent<ShieldComponent>(pDTO.OtherEntity))
+                {
+                    if (!dto.ECB.HasValue)
+                    {
+                        entityManager.AddComponent(pDTO.OtherEntity, typeof(ShieldComponent));
+                    }
+                    else
+                    {
+                        dto.ECB.Value.AddComponent(pDTO.OtherEntity, typeof(ShieldComponent));
+                    }
+                }
+
+                if (!dto.ECB.HasValue)
+                {
+                    entityManager.SetComponentData(pDTO.OtherEntity, new ShieldComponent()
+                    {
+                        CreatedTime = DateTime.Now,
+                        Lifespan = powerup.Shield.LifetimeSeconds
+                    });
+                }
+                else
+                {
+                    dto.ECB.Value.SetComponent(pDTO.OtherEntity, new ShieldComponent() 
+                    { 
+                        CreatedTime = DateTime.Now,
+                        Lifespan = powerup.Shield.LifetimeSeconds
+                    });
+                }
+
+                OnShieldAdded?.Invoke();
             }
         }
     }

@@ -36,5 +36,15 @@ namespace DOTS_Exercise.Utils
         /// Triggered when the game ends
         /// </summary>
         public const string Trigger_OnGameEnded = "GameplayManager.OnGameEnded";
+        
+        /// <summary>
+        /// Triggered when the player gains a shield
+        /// </summary>
+        public const string Trigger_OnPlayerShieldAdded = "GameplayManager.OnPlayerShieldAdded";
+        
+        /// <summary>
+        /// Triggered when the player loses a shield
+        /// </summary>
+        public const string Trigger_OnPlayerShieldRemoved = "GameplayManager.OnPlayerShieldRemoved";
     }
 }

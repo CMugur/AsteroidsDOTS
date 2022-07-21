@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0cce1cc0623cee346bf1bf096474f13d, type: 3}
-  m_Name: Weapon Upgrade Powerup
+  m_Name: Weapon&Shield Powerup
   m_EditorClassIdentifier: 
   ID: 0
   UnitType: 6
   Sprite: {fileID: 8082763461715426152, guid: bee9af09159b04d4fb3bf0bb7f59cc9d, type: 3}
-  Health: 1
   Lives: 1
   MovementSpeed: 0.001
   RotationSpeed: 0.001
   CanRotate: 0
   ScoreAddedOnDeath: 0
   WeaponUpgrade: {fileID: 11400000, guid: 9beff0382de511b42a596fc470d7dc97, type: 2}
+  Shield: {fileID: 11400000, guid: 2d29825fbdd6adc488824c1a070e1365, type: 2}

@@ -9,6 +9,7 @@ namespace DOTS_Exercise.UI.Screens
     {
         [SerializeField] private TextMeshProUGUI _scoreText;
         [SerializeField] private List<GameObject> _lifes;
+        [SerializeField] private GameObject _shieldInfo;
 
         private void Awake()
         {
@@ -21,6 +22,9 @@ namespace DOTS_Exercise.UI.Screens
             base.SetObserver(observer);
             Observer.AddListener(Events.Trigger_OnScoreChanged, OnScoreChanged);
             Observer.AddListener(Events.Trigger_OnUnitDied, OnUnitDied);
+
+            Observer.AddListener(Events.Trigger_OnPlayerShieldAdded, OnPlayerShieldAdded);
+            Observer.AddListener(Events.Trigger_OnPlayerShieldRemoved, OnPlayerShieldRemoved);
         }
 
         private void OnScoreChanged(object arg)
@@ -37,6 +41,16 @@ namespace DOTS_Exercise.UI.Screens
             }
         }
 
+        private void OnPlayerShieldAdded(object arg)
+        {
+            _shieldInfo.SetActive(true);
+        }
+
+        private void OnPlayerShieldRemoved(object arg)
+        {
+            _shieldInfo.SetActive(false);
+        }
+
         private void SetScore(int score)
         {
             _scoreText.text = score.ToString();
@@ -48,6 +62,15 @@ namespace DOTS_Exercise.UI.Screens
             {
                 _lifes[i].gameObject.SetActive(i < lifes);
             }
+        }
+
+        private void OnDestroy()
+        {
+            Observer.RemoveListener(Events.Trigger_OnScoreChanged, OnScoreChanged);
+            Observer.RemoveListener(Events.Trigger_OnUnitDied, OnUnitDied);
+
+            Observer.RemoveListener(Events.Trigger_OnPlayerShieldAdded, OnPlayerShieldAdded);
+            Observer.RemoveListener(Events.Trigger_OnPlayerShieldRemoved, OnPlayerShieldRemoved);
         }
     }
 }
