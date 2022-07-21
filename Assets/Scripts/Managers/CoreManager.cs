@@ -27,10 +27,27 @@ namespace DOTS_Exercise.Managers
 
         private void Awake()
         {
+#if UNITY_EDITOR
+            // Forcing the game view to 1:1 aspect ratio in editor, this ensures best gameplay experience
+            SetGameViewAspectRatio();
+#endif
             InstantiateManagers(_managerTypes, ref _managers);
             InjectSettings(_settings, _managers);
-            InitializeManagers(_managers);
+            InitializeManagers(_managers);            
         }
+
+#if UNITY_EDITOR
+        private void SetGameViewAspectRatio()
+        {
+            int idx = GameViewUtils.FindSize(UnityEditor.GameViewSizeGroupType.Standalone, 1, 1);
+            if (idx == -1)
+            {
+                GameViewUtils.AddCustomSize(GameViewUtils.GameViewSizeType.AspectRatio, UnityEditor.GameViewSizeGroupType.Standalone, 1, 1, "1x1");
+                idx = GameViewUtils.FindSize(UnityEditor.GameViewSizeGroupType.Standalone, 1, 1);
+            }            
+            GameViewUtils.SetSize(idx);
+        }
+#endif
 
         private void Update()
         {
