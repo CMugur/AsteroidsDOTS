@@ -10,8 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f679382c16f0a3b449daf7f6186f9b68, type: 3}
-  m_Name: Player Weapon
+  m_Name: Single Fire Player Weapon
   m_EditorClassIdentifier: 
   ID: 0
   Projectile: {fileID: 11400000, guid: 4116b8db5ce365c48859a35da3bac44f, type: 2}
   ProjectileCount: 1
+  AngleBetweenProjectiles: 8
+  CooldownSeconds: 0

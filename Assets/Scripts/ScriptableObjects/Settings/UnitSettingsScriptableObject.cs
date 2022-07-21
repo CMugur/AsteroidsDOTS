@@ -15,6 +15,7 @@ namespace DOTS_Exercise.Data.Settings
         public List<AsteroidWaveScriptableObject> Waves;
         public PlayerUnitScriptableObject Player;
         public List<WeaponScriptableObject> Weapons;
+        public List<PowerupUnitScriptableObject> Powerups;
         public UFOUnitScriptableObject UFO;
 
         public AsteroidWaveScriptableObject GetWave(int id)
@@ -25,6 +26,11 @@ namespace DOTS_Exercise.Data.Settings
         public WeaponScriptableObject GetWeapon(int id)
         {
             return Weapons.FirstOrDefault(w => w.ID == id);
+        }
+        
+        public PowerupUnitScriptableObject GetPowerup(int id)
+        {
+            return Powerups.FirstOrDefault(p => p.ID == id);
         }
     }
 }

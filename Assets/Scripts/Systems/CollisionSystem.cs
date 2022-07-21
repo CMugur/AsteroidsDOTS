@@ -16,11 +16,12 @@ namespace DOTS_Exercise.ECS.Systems
 
         private readonly Dictionary<UnitTypes, List<UnitTypes>> _collisionWhitelistMapping = new Dictionary<UnitTypes, List<UnitTypes>>()
         {
-            { UnitTypes.Player, new List<UnitTypes>(){ UnitTypes.PlayerProjectile } },
-            { UnitTypes.PlayerProjectile, new List<UnitTypes>(){ UnitTypes.Player, UnitTypes.UFOProjectile } },
-            { UnitTypes.Asteroid, new List<UnitTypes>(){ UnitTypes.UFO, UnitTypes.UFOProjectile } },
-            { UnitTypes.UFO, new List<UnitTypes>(){ UnitTypes.Asteroid, UnitTypes.UFOProjectile } },
-            { UnitTypes.UFOProjectile, new List<UnitTypes>(){ UnitTypes.Asteroid, UnitTypes.UFO, UnitTypes.PlayerProjectile } }
+            { UnitTypes.Player, new List<UnitTypes>(){ UnitTypes.PlayerProjectile, UnitTypes.Powerup } },
+            { UnitTypes.PlayerProjectile, new List<UnitTypes>(){ UnitTypes.Player, UnitTypes.UFOProjectile, UnitTypes.Powerup } },
+            { UnitTypes.Asteroid, new List<UnitTypes>(){ UnitTypes.UFO, UnitTypes.UFOProjectile, UnitTypes.Powerup } },
+            { UnitTypes.UFO, new List<UnitTypes>(){ UnitTypes.Asteroid, UnitTypes.UFOProjectile, UnitTypes.Powerup } },
+            { UnitTypes.UFOProjectile, new List<UnitTypes>(){ UnitTypes.Asteroid, UnitTypes.UFO, UnitTypes.PlayerProjectile, UnitTypes.Powerup } },
+            { UnitTypes.Powerup, new List<UnitTypes>(){ UnitTypes.Asteroid, UnitTypes.UFO, UnitTypes.PlayerProjectile, UnitTypes.UFOProjectile } }
         };
 
         protected override void OnCreate()
@@ -78,24 +79,47 @@ namespace DOTS_Exercise.ECS.Systems
                     Bounds bounds_original = new Bounds(renderBounds_original.Value.Center, renderBounds_original.Value.Size);
                     Bounds bounds_toCompare = new Bounds(renderBounds_toCompare.Value.Center, renderBounds_toCompare.Value.Size);
                     if (bounds_original.Intersects(bounds_toCompare))
-                    {                        
-                        ecb.DestroyEntity(entities[i]);
-                        Observer.Trigger(Events.Trigger_OnUnitDied, new UnitDiedWithPositionDTO() 
-                        { 
-                            ECB = ecb, 
-                            UnitComponent = unitComponent_original,
-                            Position = bounds_original.center
-                        });
-                        entitiesRemoved.Add(i);
-                        ecb.DestroyEntity(entities[j]);
-                        Observer.Trigger(Events.Trigger_OnUnitDied, new UnitDiedWithPositionDTO() 
-                        { 
-                            ECB = ecb, 
-                            UnitComponent = unitComponent_toCompare,
-                            Position = bounds_toCompare.center
-                        });
-                        entitiesRemoved.Add(j);
+                    {
+                        if (entitiesManager.HasComponent<PowerupTagComponent>(entities[i]))
+                        {
+                            removePowerupEntity(entities[i], entities[j], unitComponent_original, bounds_original);
+                            return;
+                        }
+                        else if (entitiesManager.HasComponent<PowerupTagComponent>(entities[j]))
+                        {
+                            removePowerupEntity(entities[j], entities[i], unitComponent_toCompare, bounds_toCompare);
+                            return;
+                        }
+
+                        removeEntity(entities[i], unitComponent_original, bounds_original);
+                        removeEntity(entities[j], unitComponent_toCompare, bounds_toCompare);
                     }
+                }
+
+                void removeEntity(Entity entity, UnitComponent unitComponent, Bounds bounds)
+                {
+                    ecb.DestroyEntity(entity);
+                    Observer.Trigger(Events.Trigger_OnUnitDied, new UnitDiedWithPositionDTO()
+                    {
+                        ECB = ecb,
+                        UnitComponent = unitComponent,
+                        Position = bounds.center
+                    });
+                    entitiesRemoved.Add(i);
+                }
+
+                void removePowerupEntity(Entity powerupEntity, Entity otherEntity, UnitComponent unitComponent, Bounds bounds)
+                {
+                    ecb.DestroyEntity(powerupEntity);
+                    Observer.Trigger(Events.Trigger_OnUnitDied, new PowerupDestroyedWithPositionDTO()
+                    {
+                        ECB = ecb,
+                        UnitComponent = unitComponent,
+                        Position = bounds.center,
+                        PowerupTagComponent = entitiesManager.GetComponentData<PowerupTagComponent>(powerupEntity),
+                        OtherEntity = otherEntity
+                    });
+                    entitiesRemoved.Add(i);
                 }
             }
         }

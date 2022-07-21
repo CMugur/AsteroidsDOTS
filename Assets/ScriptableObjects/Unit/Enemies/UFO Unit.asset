@@ -15,7 +15,6 @@ MonoBehaviour:
   ID: 0
   UnitType: 5
   Sprite: {fileID: 147892167238007827, guid: bee9af09159b04d4fb3bf0bb7f59cc9d, type: 3}
-  Health: 1
   Lives: 1
   MovementSpeed: 1
   RotationSpeed: 1
@@ -23,3 +22,4 @@ MonoBehaviour:
   ScoreAddedOnDeath: 50
   DefaultWeapon: {fileID: 11400000, guid: fdfb769551244df45aef9869d5b08b03, type: 2}
   InvulnerabilityOnSpawnSeconds: 0
+  PowerupToSpawnOnDeath: {fileID: 11400000, guid: 5731f17cf2f0c0146a8e14185b70f9c8, type: 2}

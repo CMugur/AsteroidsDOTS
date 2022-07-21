@@ -9,12 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fae621fa67ff3e4c941b63c6198458e, type: 3}
-  m_Name: Easy_AsteroidWave
+  m_Script: {fileID: 11500000, guid: f679382c16f0a3b449daf7f6186f9b68, type: 3}
+  m_Name: Double Fire Player Weapon
   m_EditorClassIdentifier: 
-  ID: 0
-  Asteroids:
-  - {fileID: 11400000, guid: 1c93fef49e4be26479b39021716f12a9, type: 2}
-  SpawnAreaOffsetFromCameraSize: 0.5
-  PlayerSafeRadius: 1
-  NextWaveID: 0
+  ID: 2
+  Projectile: {fileID: 11400000, guid: 4116b8db5ce365c48859a35da3bac44f, type: 2}
+  ProjectileCount: 2
+  AngleBetweenProjectiles: 8
+  CooldownSeconds: 0

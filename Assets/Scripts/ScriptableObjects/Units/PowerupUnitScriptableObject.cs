@@ -6,6 +6,8 @@ namespace DOTS_Exercise.Data.Units
     [CreateAssetMenu(fileName = "Powerup Unit Scriptable Object", menuName = "Scriptable Objects/Units/Powerup Unit")]
     public class PowerupUnitScriptableObject : UnitScriptableObject
     {
+        public Weapons.WeaponScriptableObject WeaponUpgrade;
+
         public virtual void OnValidate()
         {
             UnitType = UnitTypes.Powerup;

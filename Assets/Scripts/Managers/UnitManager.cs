@@ -85,7 +85,8 @@ namespace DOTS_Exercise.Managers
                 { UnitTypes.Asteroid, new AsteroidUnitService(SpawnUnit) },
                 { UnitTypes.PlayerProjectile, new ProjectileUnitService(SpawnUnit) },
                 { UnitTypes.UFO, new UFOUnitService(SpawnUnit) },
-                { UnitTypes.UFOProjectile, new ProjectileUnitService(SpawnUnit) }
+                { UnitTypes.UFOProjectile, new ProjectileUnitService(SpawnUnit) },
+                { UnitTypes.Powerup, new PowerupUnitService(SpawnUnit) }
             };
 
             _unitServices[UnitTypes.Player].SetUnitSettings(UnitSettings);
@@ -93,6 +94,7 @@ namespace DOTS_Exercise.Managers
             _unitServices[UnitTypes.PlayerProjectile].SetUnitSettings(UnitSettings);
             _unitServices[UnitTypes.UFO].SetUnitSettings(UnitSettings);
             _unitServices[UnitTypes.UFOProjectile].SetUnitSettings(UnitSettings);
+            _unitServices[UnitTypes.Powerup].SetUnitSettings(UnitSettings);
 
             ((AsteroidUnitService)_unitServices[UnitTypes.Asteroid]).OnHalfWaveCleared.AddListener(() => { _unitServices[UnitTypes.UFO].SpawnUnit(); });
         }
@@ -109,6 +111,8 @@ namespace DOTS_Exercise.Managers
             _unitArchetypes.Add(UnitTypes.UFO, GetEntityArchetype(UnitArchetypeComponents.Concat(additionalUFOComponentTypes).ToArray()));
             var additionalUFOProjectileComponentTypes = new ComponentType[] { typeof(LifetimeComponent) };
             _unitArchetypes.Add(UnitTypes.UFOProjectile, GetEntityArchetype(UnitArchetypeComponents.Concat(additionalUFOProjectileComponentTypes).ToArray()));
+            var additionalPowerupComponentTypes = new ComponentType[] { typeof(PowerupTagComponent) };
+            _unitArchetypes.Add(UnitTypes.Powerup, GetEntityArchetype(UnitArchetypeComponents.Concat(additionalPowerupComponentTypes).ToArray()));
         }
 
         #region Events
@@ -129,6 +133,12 @@ namespace DOTS_Exercise.Managers
             if (_unitServices.ContainsKey(dto.UnitComponent.UnitType))
             {
                 _unitServices[dto.UnitComponent.UnitType].OnUnitDestroyed(dto);
+            }
+            switch (dto.UnitComponent.UnitType)
+            {
+                case UnitTypes.UFO:
+                    _unitServices[UnitTypes.Powerup].SpawnUnit(new SpawnUnitDTO() { ECB = dto.ECB, Position = dto.Position });
+                    break;
             }
         }
 
@@ -171,8 +181,7 @@ namespace DOTS_Exercise.Managers
             entityManager.SetComponentData(unitEntity, new Translation { Value = dto.Position });
             entityManager.SetComponentData(unitEntity, new UnitComponent 
             { 
-                Direction = dto.Direction, 
-                Health = unit.Health,
+                Direction = dto.Direction,
                 Lives = unit.Lives, 
                 MovementSpeed = unit.MovementSpeed,
                 RotationSpeed = unit.RotationSpeed,
@@ -200,7 +209,6 @@ namespace DOTS_Exercise.Managers
             dto.ECB.Value.SetComponent(unitEntity, new UnitComponent
             {
                 Direction = dto.Direction,
-                Health = unit.Health,
                 Lives = unit.Lives,
                 MovementSpeed = unit.MovementSpeed,
                 RotationSpeed = unit.RotationSpeed,

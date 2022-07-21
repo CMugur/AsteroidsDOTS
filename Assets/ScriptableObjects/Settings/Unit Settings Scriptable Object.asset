@@ -18,4 +18,7 @@ MonoBehaviour:
   Weapons:
   - {fileID: 11400000, guid: b7e5b747efb470e448aa20d27745d535, type: 2}
   - {fileID: 11400000, guid: fdfb769551244df45aef9869d5b08b03, type: 2}
+  - {fileID: 11400000, guid: 9beff0382de511b42a596fc470d7dc97, type: 2}
+  Powerups:
+  - {fileID: 11400000, guid: 5731f17cf2f0c0146a8e14185b70f9c8, type: 2}
   UFO: {fileID: 11400000, guid: 907a6c54482654c4cbd3bd1cd7adb15f, type: 2}

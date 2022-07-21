@@ -3,7 +3,9 @@ using DOTS_Exercise.Data.Weapons;
 using DOTS_Exercise.ECS.Components.Units;
 using DOTS_Exercise.Utils;
 using System;
+using System.Collections.Generic;
 using Unity.Entities;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace DOTS_Exercise.Services
@@ -27,22 +29,38 @@ namespace DOTS_Exercise.Services
                 return;
             }
 
-            var entity = _unitFactory(weapon.Projectile, pDTO);
-            if (!dto.ECB.HasValue)
+            int projectileCount = weapon.ProjectileCount;
+            int angleCount = 0;
+            List<float3> directions = new List<float3>();
+            
+            while (angleCount < projectileCount)
             {
-                World.DefaultGameObjectInjectionWorld.EntityManager.SetComponentData(entity, new LifetimeComponent
-                {
-                    CreatedTime = DateTime.Now,
-                    Lifespan = weapon.Projectile.Lifetime
-                });
+                directions.Add(Quaternion.Euler(0, 0, weapon.AngleBetweenProjectiles * angleCount) * dto.Direction);
+                angleCount++;
             }
-            else
+
+            while (projectileCount > 0)
             {
-                dto.ECB.Value.SetComponent(entity, new LifetimeComponent
+                pDTO.Direction = directions[projectileCount - 1];
+                var entity = _unitFactory(weapon.Projectile, pDTO);
+                if (!dto.ECB.HasValue)
                 {
-                    CreatedTime = DateTime.Now,
-                    Lifespan = weapon.Projectile.Lifetime
-                });
+                    World.DefaultGameObjectInjectionWorld.EntityManager.SetComponentData(entity, new LifetimeComponent
+                    {
+                        CreatedTime = DateTime.Now,
+                        Lifespan = weapon.Projectile.Lifetime
+                    });
+                }
+                else
+                {
+                    dto.ECB.Value.SetComponent(entity, new LifetimeComponent
+                    {
+                        CreatedTime = DateTime.Now,
+                        Lifespan = weapon.Projectile.Lifetime
+                    });
+                }
+
+                projectileCount--;
             }
         }
     }

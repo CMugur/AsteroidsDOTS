@@ -8,6 +8,7 @@ namespace DOTS_Exercise.Data.Weapons
         public int ID;
         public PlayerProjectileScriptableObject Projectile;
         public int ProjectileCount = 1;
+        public int AngleBetweenProjectiles = 15;
         public float CooldownSeconds = 0;
     }
 }

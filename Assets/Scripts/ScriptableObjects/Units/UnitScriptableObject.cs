@@ -9,7 +9,6 @@ namespace DOTS_Exercise.Data.Units
         public int ID;
         public UnitTypes UnitType;
         public Sprite Sprite;
-        public int Health = 1;
         public int Lives = 1;
         public float MovementSpeed = 1;
         public float RotationSpeed = 1;
